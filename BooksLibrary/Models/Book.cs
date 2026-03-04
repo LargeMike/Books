@@ -1,4 +1,4 @@
-namespace BooksLibrary;
+namespace BooksLibrary.Models;
 
 public class Book
 {
@@ -9,4 +9,8 @@ public class Book
    public Guid AuthorId { get; set; }
    public Guid PublisherId { get; set; }
    public DateTime DatePublished { get; set; }
+   
+   public List<Author> Authors { get; set; }
+   public List<Publisher> Publishers { get; set; }
+   public List<Genre> Genres { get; set; }
 }
