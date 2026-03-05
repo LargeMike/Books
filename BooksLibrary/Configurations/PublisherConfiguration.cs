@@ -8,6 +8,10 @@ public class PublisherConfiguration : IEntityTypeConfiguration<Publisher>
 {
     public void Configure(EntityTypeBuilder<Publisher> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(publisher => publisher.Id);
+
+        builder.
+            HasMany(publisher => publisher.Books)
+            .WithMany(book => book.Publishers);
     }
 }

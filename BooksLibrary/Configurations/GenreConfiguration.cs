@@ -8,6 +8,10 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
 {
     public void Configure(EntityTypeBuilder<Genre> builder)
     {
-        throw new NotImplementedException();
+        builder.HasKey(genre => genre.Id);
+
+        builder.
+            HasMany(genre => genre.Books)
+            .WithOne(books => books.Genre);
     }
 }
