@@ -25,7 +25,12 @@ public class InputHandler
             Console.Write(Messages.FileNotFound);
             return;
         }
-       
+        
+        GetFileContent(filePath);
+    }
+    
+    private void GetFileContent(string filePath)
+    {
         var lines = File.ReadLines(filePath);
 
         try
