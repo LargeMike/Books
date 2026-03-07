@@ -44,5 +44,23 @@ namespace Books.Resources {
                 resourceCulture = value;
             }
         }
+        
+        internal static string InputPrompt {
+            get {
+                return ResourceManager.GetString("InputPrompt", resourceCulture);
+            }
+        }
+        
+        internal static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string AccessDenied {
+            get {
+                return ResourceManager.GetString("AccessDenied", resourceCulture);
+            }
+        }
     }
 }

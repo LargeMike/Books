@@ -1,4 +1,4 @@
-﻿namespace BooksApp;
+﻿namespace Books;
 
 class Program
 {
