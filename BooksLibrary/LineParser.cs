@@ -1,8 +1,8 @@
 namespace BooksLibrary;
 
-public class UserFileProcessor
+public class LineParser
 {
-    public void ProcessLine(string filePath)
+    public void ParseLine(string filePath)
     {
         throw  new NotImplementedException();
     }

@@ -1,3 +1,4 @@
+using System.Reflection;
 using BooksLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,5 +13,12 @@ public class BooksDbContext : DbContext
 
    public BooksDbContext(DbContextOptions<BooksDbContext> options) : base(options)
    {
+   }
+
+   protected override void OnModelCreating(ModelBuilder modelBuilder)
+   {
+      base.OnModelCreating(modelBuilder);
+
+      modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
    }
 }

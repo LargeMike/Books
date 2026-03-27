@@ -6,11 +6,11 @@ namespace Books.UI;
 public class InputHandler
 {
     public string? FilePath { get; private set; }
-    private readonly UserFileProcessor  _userFileProcessor;
+    private readonly FileProcessor  _userFileProcessor;
 
-    public InputHandler(UserFileProcessor userFileProcessor)
+    public InputHandler(FileProcessor FileProcessor)
     {
-        _userFileProcessor = userFileProcessor ?? throw new ArgumentNullException(nameof(userFileProcessor));
+        _userFileProcessor = FileProcessor ?? throw new ArgumentNullException(nameof(FileProcessor));
         FilePath = null;
         GetFilePath();
     }
