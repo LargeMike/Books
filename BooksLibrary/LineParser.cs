@@ -2,8 +2,12 @@ namespace BooksLibrary;
 
 public class LineParser
 {
-    public void ParseLine(string filePath)
+    public ParsedBook ParseLine(string line, string[] headers)
     {
-        throw  new NotImplementedException();
+        var values = line.Split(',');
+        var book = new ParsedBook();
+        var property = typeof(ParsedBook).GetProperty(nameof(ParsedBook.Title));
+        
+        return book;
     }
 }

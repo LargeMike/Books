@@ -6,6 +6,7 @@ public class FileProcessor
 {
     private readonly LineParser _lineParser;
     private readonly List<string> _fields;
+    private bool _headersRead = false;
     
     public IEnumerable<string> CurrentField => _fields;
 
@@ -15,10 +16,20 @@ public class FileProcessor
         _fields = new List<string>();
     }
 
-    public void ProcessLine(string filePath)
+    public void ProcessLine(string line)
     {
-        _fields.Clear();
-        _lineParser.ParseLine(filePath);
+        if (!_headersRead)
+        {
+            _fields.Clear();
+            var headers = line.Split(',');
+            foreach (var header in headers)
+            {
+                _fields.Add(header);
+            }
+            _headersRead = true;
+            return;
+        }
         
+        _lineParser.ParseLine(line, _fields.ToArray());
     }
 }
