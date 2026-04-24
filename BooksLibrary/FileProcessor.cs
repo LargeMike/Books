@@ -1,6 +1,3 @@
-using System.Collections;
-using BooksLibrary.Models;
-
 namespace BooksLibrary;
 
 public class FileProcessor
@@ -9,8 +6,6 @@ public class FileProcessor
     private readonly List<string> _fields;
     private bool _headersRead = false;
     
-    public IEnumerable<string> CurrentField => _fields;
-
     public FileProcessor(LineParser LineParser)
     {
         _lineParser = LineParser;
