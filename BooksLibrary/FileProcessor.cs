@@ -17,7 +17,7 @@ public class FileProcessor
         _fields = new List<string>();
     }
 
-    public void ProcessLine(string line)
+    public ParsedBook? ProcessLine(string line)
     {
         if (!_headersRead)
         {
@@ -28,9 +28,9 @@ public class FileProcessor
                 _fields.Add(header);
             }
             _headersRead = true;
-            return;
+            return null;
         }
         
-        _lineParser.ParseLine(line, _fields.ToArray());
+        return _lineParser.ParseLine(line, _fields.ToArray());
     }
 }
