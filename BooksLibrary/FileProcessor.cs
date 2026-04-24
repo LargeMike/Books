@@ -1,3 +1,4 @@
+using System.Collections;
 using BooksLibrary.Models;
 
 namespace BooksLibrary;
@@ -21,7 +22,7 @@ public class FileProcessor
         if (!_headersRead)
         {
             _fields.Clear();
-            var headers = line.Split(',');
+            var headers = _lineParser.SplitCsvLine(line);
             foreach (var header in headers)
             {
                 _fields.Add(header);
