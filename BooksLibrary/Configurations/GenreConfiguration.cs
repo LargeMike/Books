@@ -10,8 +10,8 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
     {
         builder.HasKey(genre => genre.Id);
 
-        builder.
-            HasMany(genre => genre.Books)
-            .WithOne(books => books.Genre);
+        builder.HasMany(genre => genre.Books)
+            .WithOne(book => book.Genre)
+            .HasForeignKey(book => book.GenreId);
     }
 }

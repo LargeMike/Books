@@ -11,6 +11,6 @@ public class Book
    public DateTime DatePublished { get; set; }
    
    public Author Author { get; set; }
-   public List<Publisher> Publishers { get; set; }
+   public Publisher Publisher { get; set; }
    public Genre Genre { get; set; }
 }

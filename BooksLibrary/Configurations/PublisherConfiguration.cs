@@ -12,6 +12,7 @@ public class PublisherConfiguration : IEntityTypeConfiguration<Publisher>
 
         builder.
             HasMany(publisher => publisher.Books)
-            .WithMany(book => book.Publishers);
+            .WithOne(book => book.Publisher)
+            .HasForeignKey(book => book.PublisherId);
     }
 }

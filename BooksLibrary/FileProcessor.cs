@@ -6,9 +6,9 @@ public class FileProcessor
     private readonly List<string> _fields;
     private bool _headersRead = false;
     
-    public FileProcessor(LineParser LineParser)
+    public FileProcessor(LineParser lineParser)
     {
-        _lineParser = LineParser;
+        _lineParser = lineParser;
         _fields = new List<string>();
     }
 
