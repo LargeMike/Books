@@ -12,10 +12,9 @@ public class InputHandler
     {
         _userFileProcessor = FileProcessor ?? throw new ArgumentNullException(nameof(FileProcessor));
         FilePath = null;
-        GetFilePath();
     }
 
-    public void GetFilePath()
+    public async Task GetFilePath()
     {
         Console.Write(Messages.InputPrompt);
         var filePath = Console.ReadLine();
@@ -26,10 +25,10 @@ public class InputHandler
             return;
         }
         
-        GetFileContent(filePath);
+        await GetFileContent(filePath);
     }
     
-    private void GetFileContent(string filePath)
+    private async Task GetFileContent(string filePath)
     {
         var lines = File.ReadLines(filePath);
 
@@ -39,7 +38,7 @@ public class InputHandler
             {
                 if (!string.IsNullOrWhiteSpace(line))
                 {
-                    _userFileProcessor.ProcessLine(line);
+                    await _userFileProcessor.ProcessLineAsync(line);
                 }
             }
         }

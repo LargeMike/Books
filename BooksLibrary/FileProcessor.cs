@@ -5,14 +5,16 @@ public class FileProcessor
     private readonly LineParser _lineParser;
     private readonly List<string> _fields;
     private bool _headersRead = false;
+    private readonly BookSaver _bookSaver;
     
-    public FileProcessor(LineParser lineParser)
+    public FileProcessor(LineParser lineParser, BookSaver bookSaver)
     {
         _lineParser = lineParser;
+        _bookSaver = bookSaver;
         _fields = new List<string>();
     }
 
-    public ParsedBook? ProcessLine(string line)
+    public async Task ProcessLineAsync(string line)
     {
         if (!_headersRead)
         {
@@ -23,9 +25,11 @@ public class FileProcessor
                 _fields.Add(header);
             }
             _headersRead = true;
-            return null;
+            return;
         }
         
-        return _lineParser.ParseLine(line, _fields.ToArray());
+        var parsedBook = _lineParser.ParseLine(line, _fields.ToArray());
+        if (parsedBook != null)
+            await _bookSaver.SaveAsync(parsedBook);
     }
 }
