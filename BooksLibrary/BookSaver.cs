@@ -6,17 +6,23 @@ namespace BooksLibrary;
 public class BookSaver
 {
     private readonly BooksDbContext _dbContext;
+    public List<string> Duplicates { get; private set; }
+    public List<string> AddedBooks { get; private set; }
+    public List<string> NotParsedDate { get; private set; }
 
     public BookSaver(BooksDbContext dbContext)
     {
         _dbContext = dbContext;
+        Duplicates = new List<string>();
+        AddedBooks = new List<string>();
+        NotParsedDate = new List<string>();
     }
 
     public async Task SaveAsync(ParsedBook parsedBook)
     {
         if (parsedBook.ReleaseDate == null)
         {
-            Console.WriteLine($"Skipping '{parsedBook.Title}' because date is not parsed");
+            NotParsedDate.Add(parsedBook.Title);
             return;
         }
         
@@ -32,7 +38,7 @@ public class BookSaver
 
         if (isDuplicate)
         {
-            Console.WriteLine($"Skipping '{parsedBook.Title}' because it is duplicated");
+            Duplicates.Add(parsedBook.Title);
             return;
         }
 
@@ -49,7 +55,7 @@ public class BookSaver
         
         _dbContext.Books.Add(book);
         await _dbContext.SaveChangesAsync();
-
+        AddedBooks.Add(parsedBook.Title);
     }
 
     private async Task<Author> FindOrCreateAuthorAsync(string authorName)

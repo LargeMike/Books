@@ -19,12 +19,35 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="InputPrompt" xml:space="preserve">
-        <value>Type path to the file: </value>
+        <value>Select an option:
+1. Import books from file
+2. Search books by filter</value>
     </data>
     <data name="FileNotFound" xml:space="preserve">
         <value>File not found!</value>
     </data>
     <data name="AccessDenied" xml:space="preserve">
         <value>Access denied to the file</value>
+    </data>
+    <data name="BookList" xml:space="preserve">
+        <value>There is the list of added books:</value>
+    </data>
+    <data name="CountBooksAdded" xml:space="preserve">
+        <value>The number of added books:</value>
+    </data>
+    <data name="NotParsedDate" xml:space="preserve">
+        <value>Books with not parsed Date:</value>
+    </data>
+    <data name="DuplicatedBooks" xml:space="preserve">
+        <value>Duplicated Books:</value>
+    </data>
+    <data name="AddedBooks" xml:space="preserve">
+        <value>Added books:</value>
+    </data>
+    <data name="Greetings" xml:space="preserve">
+        <value>Welcome to Books Manager!</value>
+    </data>
+    <data name="Result" xml:space="preserve">
+        <value />
     </data>
 </root>

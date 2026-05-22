@@ -62,5 +62,47 @@ namespace Books.Resources {
                 return ResourceManager.GetString("AccessDenied", resourceCulture);
             }
         }
+        
+        internal static string BookList {
+            get {
+                return ResourceManager.GetString("BookList", resourceCulture);
+            }
+        }
+        
+        internal static string CountBooksAdded {
+            get {
+                return ResourceManager.GetString("CountBooksAdded", resourceCulture);
+            }
+        }
+        
+        internal static string NotParsedDate {
+            get {
+                return ResourceManager.GetString("NotParsedDate", resourceCulture);
+            }
+        }
+        
+        internal static string DuplicatedBooks {
+            get {
+                return ResourceManager.GetString("DuplicatedBooks", resourceCulture);
+            }
+        }
+        
+        internal static string AddedBooks {
+            get {
+                return ResourceManager.GetString("AddedBooks", resourceCulture);
+            }
+        }
+        
+        internal static string Greetings {
+            get {
+                return ResourceManager.GetString("Greetings", resourceCulture);
+            }
+        }
+        
+        internal static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
+            }
+        }
     }
 }
