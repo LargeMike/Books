@@ -5,7 +5,8 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+      <UserSecretsId>11486e67-2f33-479b-b850-3f966434fdbb</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.13" />
@@ -20,6 +21,7 @@
       </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.13" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.13" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>

@@ -99,9 +99,39 @@ namespace Books.Resources {
             }
         }
         
-        internal static string Result {
+        internal static string OutputMethods {
             get {
-                return ResourceManager.GetString("Result", resourceCulture);
+                return ResourceManager.GetString("OutputMethods", resourceCulture);
+            }
+        }
+        
+        internal static string WrongChoice {
+            get {
+                return ResourceManager.GetString("WrongChoice", resourceCulture);
+            }
+        }
+        
+        internal static string EmptyChoice {
+            get {
+                return ResourceManager.GetString("EmptyChoice", resourceCulture);
+            }
+        }
+        
+        internal static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        internal static string ExportCSV {
+            get {
+                return ResourceManager.GetString("ExportCSV", resourceCulture);
+            }
+        }
+        
+        internal static string FilterPrompt {
+            get {
+                return ResourceManager.GetString("FilterPrompt", resourceCulture);
             }
         }
     }
