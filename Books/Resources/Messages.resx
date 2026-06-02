@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="InputPrompt" xml:space="preserve">
-        <value>Please provide the path to .csv file</value>
+        <value>Please enter the path to .csv file: </value>
     </data>
     <data name="FileNotFound" xml:space="preserve">
         <value>File not found!</value>
@@ -47,12 +47,10 @@
     </data>
     <data name="OutputMethods" xml:space="preserve">
         <value>Select what to display:
-    1 — Number of found books
-    2 — List of found books
-    3 — Added books
-    4 — Duplicated books
-    5 — Books with unparsed date
-    6 — Save results to file</value>
+    1 — Added books
+    2 — Books with unparsed date
+    3 — Duplicated books
+    0 - Exit to main menu</value>
     </data>
     <data name="WrongChoice" xml:space="preserve">
         <value>Invalid option. Please try again.</value>
@@ -63,12 +61,16 @@
     <data name="Options" xml:space="preserve">
         <value>Select an option:
 1. Import books from file
-2. Search books by filter</value>
+2. Search books by filter
+0.Exit</value>
     </data>
     <data name="ExportCSV" xml:space="preserve">
         <value>Export results to CSV? y/n</value>
     </data>
     <data name="FilterPrompt" xml:space="preserve">
-        <value>Enter path to filter.json:</value>
+        <value>Enter path to filter.json: </value>
+    </data>
+    <data name="OutputMessage" xml:space="preserve">
+        <value>Adedd:{0}, Not Parsed date:{1}, Duplicates:{2}</value>
     </data>
 </root>

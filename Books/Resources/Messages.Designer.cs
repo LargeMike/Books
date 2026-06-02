@@ -134,5 +134,11 @@ namespace Books.Resources {
                 return ResourceManager.GetString("FilterPrompt", resourceCulture);
             }
         }
+        
+        internal static string OutputMessage {
+            get {
+                return ResourceManager.GetString("OutputMessage", resourceCulture);
+            }
+        }
     }
 }

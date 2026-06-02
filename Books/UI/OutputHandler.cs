@@ -10,9 +10,32 @@ public class OutputHandler
       List<string> notParsedDates,
       List<string> duplicates)
    {
-      DisplayAddedBooks(addedBooks);
-      DisplayNotParsedDates(notParsedDates);
-      DisplayDuplicates(duplicates);
+      while (true)
+      {
+         Console.WriteLine(Messages.OutputMessage, addedBooks.Count, notParsedDates.Count, duplicates.Count);
+         Console.WriteLine($"{Messages.OutputMethods}");
+         var choice = Console.ReadLine();
+         
+         if (choice == "1")
+         {
+            DisplayAddedBooks(addedBooks);
+         }
+
+         if (choice == "2")
+         {
+            DisplayNotParsedDates(notParsedDates);
+         }
+
+         if (choice == "3")
+         {
+            DisplayDuplicates(duplicates);
+         }
+
+         if (choice == "0")
+         {
+            return;
+         }
+      }
    }
 
    public async Task DisplaySearchResults(List<Book> books)
@@ -78,9 +101,9 @@ public class OutputHandler
       var path = Path.Combine(Directory.GetCurrentDirectory(), "Results");
       Directory.CreateDirectory(path);
       var outputFilePath = Path.Combine(path, $"result_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
-      var header = "Title,Author,Genre,Publisher,NumberOfPages,DatePublished";
-      var bookStrings = books.Select(book => string.Join(",", book.Title, book.Author.AuthorName, book.Genre.GenreName,
-         book.Publisher.PublisherName, book.NumberOfPages, book.DatePublished.ToString("yyyy-MM-dd")));
+      var header = "Title,Pages,Genre,ReleaseDate,Author,Publisher";
+      var bookStrings = books.Select(book => string.Join(",", book.Title, book.NumberOfPages, book.Genre.GenreName,
+          book.DatePublished.ToString("yyyy-MM-dd"), book.Author.AuthorName, book.Publisher.PublisherName));
       List<string> rows = new List<string>();
       rows.Add(header);
       rows.AddRange(bookStrings);
