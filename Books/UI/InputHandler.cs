@@ -100,10 +100,9 @@ public class InputHandler
 
     private async Task GetFileContent(string filePath)
     {
-        var lines = File.ReadLines(filePath);
-
         try
         {
+            var lines = File.ReadLines(filePath);
             foreach (var line in lines)
             {
                 if (!string.IsNullOrWhiteSpace(line))

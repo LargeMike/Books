@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Books\Books.csproj" />
+        <ProjectReference Include="..\BooksLibrary\BooksLibrary.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MSTest" Version="4.0.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting"/>
+    </ItemGroup>
+
+</Project>
