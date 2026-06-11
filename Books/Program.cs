@@ -3,6 +3,7 @@ using BooksLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Books.Resources;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Books;
 
@@ -16,18 +17,19 @@ class Program
             .AddUserSecrets<Program>()
             .Build();
         var connectionString = $"Server={config["Db:Server"]};Database={config["Db:Name"]};User Id={config["Db:User"]};Password={config["Db:Password"]};TrustServerCertificate=true;";
-        var options = new DbContextOptionsBuilder<BooksDbContext>()
-            .UseSqlServer(connectionString)
-            .Options;
+
+        var services = new ServiceCollection();
+        services.AddDbContext<BooksDbContext>(opts => opts.UseSqlServer(connectionString));
+        services.AddTransient<LineParser>();
+        services.AddTransient<BookSaver>();
+        services.AddTransient<FileProcessor>();
+        services.AddTransient<BookSearcher>();
+        services.AddTransient<InputHandler>();
+        services.AddTransient<OutputHandler>();
         
-        var context = new BooksDbContext(options);
-        var lineParser = new LineParser();
-        var bookSaver = new BookSaver(context);
-        var fileProcessor = new FileProcessor(lineParser, bookSaver);
-        var bookSearcher = new BookSearcher(context);
-        var outputHandler =  new OutputHandler();
-        var inputHandler = new InputHandler(fileProcessor, bookSaver, bookSearcher, outputHandler);
-        
+        var provider = services.BuildServiceProvider();
+        using var scope = provider.CreateScope();
+        var inputHandler = scope.ServiceProvider.GetRequiredService<InputHandler>();
         await inputHandler.RunAsync();
     }
 }
