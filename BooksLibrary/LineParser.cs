@@ -1,72 +1,22 @@
-using System.Text;
+using System.Globalization;
+using CsvHelper.Configuration;
 
 namespace BooksLibrary;
 
-public class LineParser
+public sealed class LineParser : ClassMap<ParsedBook>
 {
-    public ParsedBook ParseLine(string line, string[] headers)
+    public LineParser()
     {
-        var values = SplitCsvLine(line);
-        var book = new ParsedBook();
-
-        for (int i = 0; i < headers.Length; i++)
+        AutoMap(CultureInfo.InvariantCulture);
+        Map(m => m.ReleaseDate).Convert(args =>
         {
-            try
-            {
-                var property = typeof(ParsedBook).GetProperty(headers[i]);
-                property.SetValue(book, Convert.ChangeType(values[i], Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType));
-            }
-            catch (FormatException)
-            {
-                book.NotParsedDate = values[i];
-            }
-        }
-
-        return book;
-    }
-    
-    internal List<string> SplitCsvLine(string line)
-    {
-        var field = new StringBuilder();
-        List<string> splittedLine = new List<string>();
-        bool inQuote = false;
-
-        foreach (var character in line)
+            var raw = args.Row.GetField("ReleaseDate");
+            return DateTime.TryParse(raw, out var date) ? date : (DateTime?)null;
+        });
+        Map(m => m.NotParsedDate).Convert(args =>
         {
-            if (inQuote == false)
-            {
-                if (character != '"' && character != ',')
-                {
-                    field.Append(character);
-                }
-
-                if (character == ',')
-                {
-                    splittedLine.Add(field.ToString());
-                    field.Clear();
-                }
-
-                if (character == '"')
-                {
-                    inQuote = true;
-                }
-            }
-
-            else if (inQuote == true)
-            {
-                if (character != '"')
-                {
-                    field.Append(character);
-                }
-
-                if (character == '"')
-                {
-                    inQuote = false;
-                }
-            }
-        }
-        splittedLine.Add(field.ToString());
-        
-        return splittedLine;
+            var raw = args.Row.GetField("ReleaseDate");
+            return DateTime.TryParse(raw, out _) ? null : raw;
+        });
     }
 }

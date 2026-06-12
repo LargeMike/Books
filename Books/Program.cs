@@ -20,7 +20,6 @@ class Program
 
         var services = new ServiceCollection();
         services.AddDbContext<BooksDbContext>(opts => opts.UseSqlServer(connectionString));
-        services.AddTransient<LineParser>();
         services.AddTransient<BookSaver>();
         services.AddTransient<FileProcessor>();
         services.AddTransient<BookSearcher>();

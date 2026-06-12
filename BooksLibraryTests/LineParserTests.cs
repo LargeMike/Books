@@ -1,45 +1,26 @@
+using System.Globalization;
 using BooksLibrary;
+using CsvHelper;
 
 namespace BooksLibraryTests;
 
 [TestClass]
 public class LineParserTests
 {
-    private readonly LineParser _parser = new();
+    private const string Header = "Title,Author,Genre,Publisher,Pages,ReleaseDate";
 
-    private static readonly string[] DefaultHeaders =
-        ["Title", "Author", "Genre", "Publisher", "Pages", "ReleaseDate"];
-
-    [TestMethod]
-    public void SplitCsvLine_SimpleLine_ReturnsCorrectFields()
+    private static ParsedBook Parse(string dataLine)
     {
-        var result = _parser.SplitCsvLine("a,b,c");
-
-        CollectionAssert.AreEqual(new[] { "a", "b", "c" }, result);
+        using var reader = new StringReader($"{Header}\n{dataLine}");
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        csv.Context.RegisterClassMap<LineParser>();
+        return csv.GetRecords<ParsedBook>().Single();
     }
 
     [TestMethod]
-    public void SplitCsvLine_QuotedFieldWithComma_ReturnsFieldAsOne()
+    public void Parse_ValidLine_MapsAllProperties()
     {
-        var result = _parser.SplitCsvLine("\"Hello, World\",b");
-
-        CollectionAssert.AreEqual(new[] { "Hello, World", "b" }, result);
-    }
-
-    [TestMethod]
-    public void SplitCsvLine_EmptyField_ReturnsEmptyString()
-    {
-        var result = _parser.SplitCsvLine("a,,c");
-
-        CollectionAssert.AreEqual(new[] { "a", "", "c" }, result);
-    }
-
-    [TestMethod]
-    public void ParseLine_ValidLine_MapsAllProperties()
-    {
-        var line = "Clean Code,Robert Martin,Programming,O'Reilly,431,2008-08-01";
-
-        var result = _parser.ParseLine(line, DefaultHeaders);
+        var result = Parse("Clean Code,Robert Martin,Programming,O'Reilly,431,2008-08-01");
 
         Assert.AreEqual("Clean Code", result.Title);
         Assert.AreEqual("Robert Martin", result.Author);
@@ -50,22 +31,34 @@ public class LineParserTests
     }
 
     [TestMethod]
-    public void ParseLine_InvalidDate_SetsNotParsedDate()
+    public void Parse_QuotedFieldWithComma_KeptAsSingleField()
     {
-        var line = "Some Book,Some Author,Genre,Publisher,100,not-a-date";
+        var result = Parse("\"Hello, World\",Some Author,Genre,Publisher,100,2020-01-15");
 
-        var result = _parser.ParseLine(line, DefaultHeaders);
+        Assert.AreEqual("Hello, World", result.Title);
+    }
+
+    [TestMethod]
+    public void Parse_EmptyField_MapsToNullOrEmpty()
+    {
+        var result = Parse("Some Book,Some Author,,Publisher,100,2020-01-15");
+
+        Assert.IsTrue(string.IsNullOrEmpty(result.Genre));
+    }
+
+    [TestMethod]
+    public void Parse_InvalidDate_SetsNotParsedDate()
+    {
+        var result = Parse("Some Book,Some Author,Genre,Publisher,100,not-a-date");
 
         Assert.IsNull(result.ReleaseDate);
         Assert.AreEqual("not-a-date", result.NotParsedDate);
     }
 
     [TestMethod]
-    public void ParseLine_ValidDate_ReleaseDateSetAndNotParsedDateIsNull()
+    public void Parse_ValidDate_ReleaseDateSetAndNotParsedDateIsNull()
     {
-        var line = "Some Book,Some Author,Genre,Publisher,100,2020-01-15";
-
-        var result = _parser.ParseLine(line, DefaultHeaders);
+        var result = Parse("Some Book,Some Author,Genre,Publisher,100,2020-01-15");
 
         Assert.IsNotNull(result.ReleaseDate);
         Assert.IsNull(result.NotParsedDate);

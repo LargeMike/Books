@@ -1,35 +1,25 @@
+using System.Globalization;
+using BooksLibrary.Models;
+using CsvHelper;
+
 namespace BooksLibrary;
 
 public class FileProcessor
 {
-    private readonly LineParser _lineParser;
-    private readonly List<string> _fields;
-    private bool _headersRead = false;
     private readonly BookSaver _bookSaver;
     
-    public FileProcessor(LineParser lineParser, BookSaver bookSaver)
+    public FileProcessor(BookSaver bookSaver)
     {
-        _lineParser = lineParser;
         _bookSaver = bookSaver;
-        _fields = new List<string>();
     }
 
-    public async Task ProcessLineAsync(string line)
+    public async Task ProcessFileAsync(TextReader reader)
     {
-        if (!_headersRead)
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+        csv.Context.RegisterClassMap<LineParser>();
+        await foreach (var book in csv.GetRecordsAsync<ParsedBook>())
         {
-            _fields.Clear();
-            var headers = _lineParser.SplitCsvLine(line);
-            foreach (var header in headers)
-            {
-                _fields.Add(header);
-            }
-            _headersRead = true;
-            return;
+            await _bookSaver.SaveAsync(book);
         }
-        
-        var parsedBook = _lineParser.ParseLine(line, _fields.ToArray());
-        if (parsedBook != null)
-            await _bookSaver.SaveAsync(parsedBook);
     }
 }

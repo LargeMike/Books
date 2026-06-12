@@ -102,14 +102,8 @@ public class InputHandler
     {
         try
         {
-            var lines = File.ReadLines(filePath);
-            foreach (var line in lines)
-            {
-                if (!string.IsNullOrWhiteSpace(line))
-                {
-                    await _userFileProcessor.ProcessLineAsync(line);
-                }
-            }
+            using var reader = new StreamReader(filePath);
+            await _userFileProcessor.ProcessFileAsync(reader);
         }
         catch (UnauthorizedAccessException)
         {

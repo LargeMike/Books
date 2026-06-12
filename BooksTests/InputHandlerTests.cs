@@ -34,9 +34,8 @@ public class InputHandlerTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         var context = new BooksDbContext(options);
-        var lineParser = new LineParser();
         var bookSaver = new BookSaver(context);
-        var fileProcessor = new FileProcessor(lineParser, bookSaver);
+        var fileProcessor = new FileProcessor(bookSaver);
         var bookSearcher = new BookSearcher(context);
         var outputHandler = new OutputHandler();
         return new InputHandler(fileProcessor, bookSaver, bookSearcher, outputHandler);
@@ -149,9 +148,8 @@ public class InputHandlerTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         var context = new BooksDbContext(options);
-        var lineParser = new LineParser();
         var bookSaver = new BookSaver(context);
-        var fileProcessor = new FileProcessor(lineParser, bookSaver);
+        var fileProcessor = new FileProcessor(bookSaver);
         var bookSearcher = new BookSearcher(context);
         var outputHandler = new OutputHandler();
 
