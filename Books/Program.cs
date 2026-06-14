@@ -28,6 +28,8 @@ class Program
         
         var provider = services.BuildServiceProvider();
         using var scope = provider.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
+        await db.Database.EnsureCreatedAsync();
         var inputHandler = scope.ServiceProvider.GetRequiredService<InputHandler>();
         await inputHandler.RunAsync();
     }

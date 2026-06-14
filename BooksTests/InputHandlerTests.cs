@@ -64,17 +64,6 @@ public class InputHandlerTests
     }
 
     [TestMethod]
-    public async Task RunAsync_WrongChoice_WritesWrongChoiceMessage()
-    {
-        Console.SetIn(new StringReader("9\n0\n"));
-        var handler = CreateHandler();
-
-        await handler.RunAsync();
-
-        Assert.Contains("Invalid option", _capturedOutput.ToString());
-    }
-
-    [TestMethod]
     public async Task RunAsync_ImportNonExistentFile_WritesFileNotFound()
     {
         // "1" → import, nonexistent path → FileNotFound, "0" → exit DisplayImportSummary, "0" → exit RunAsync

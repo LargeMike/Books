@@ -20,21 +20,30 @@ public class BookSaver
 
     public async Task SaveAsync(ParsedBook parsedBook)
     {
-        if (parsedBook.ReleaseDate == null)
-        {
-            NotParsedDate.Add(parsedBook.Title);
-            return;
-        }
+        Duplicates.Clear();
+        AddedBooks.Clear();
+        NotParsedDate.Clear();
         
+        if (parsedBook.ReleaseDate == null)
+            NotParsedDate.Add(parsedBook.Title);
+
         var author = await FindOrCreateAuthorAsync(parsedBook.Author);
         var genre = await FindOrCreateGenreAsync(parsedBook.Genre);
         var publisher = await FindOrCreatePublisherAsync(parsedBook.Publisher);
 
-        var isDuplicate = await _dbContext.Books.AnyAsync(b =>
-            b.Title == parsedBook.Title &&
-            b.AuthorId == author.Id &&
-            b.PublisherId == publisher.Id &&
-            b.DatePublished == parsedBook.ReleaseDate);
+        bool isDuplicate;
+        if (parsedBook.ReleaseDate != null)
+            isDuplicate = await _dbContext.Books.AnyAsync(b =>
+                b.Title == parsedBook.Title &&
+                b.AuthorId == author.Id &&
+                b.PublisherId == publisher.Id &&
+                b.DatePublished == parsedBook.ReleaseDate);
+        else
+            isDuplicate = await _dbContext.Books.AnyAsync(b =>
+                b.Title == parsedBook.Title &&
+                b.AuthorId == author.Id &&
+                b.PublisherId == publisher.Id &&
+                b.NotParsedDate == parsedBook.NotParsedDate);
 
         if (isDuplicate)
         {
@@ -50,7 +59,8 @@ public class BookSaver
             AuthorId = author.Id,
             GenreId = genre.Id,
             PublisherId = publisher.Id,
-            DatePublished = parsedBook.ReleaseDate.Value,
+            DatePublished = parsedBook.ReleaseDate,
+            NotParsedDate = parsedBook.NotParsedDate,
         };
         
         _dbContext.Books.Add(book);

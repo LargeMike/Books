@@ -194,6 +194,36 @@ public class BookSearcherTests
     }
 
     [TestMethod]
+    public async Task SearchAsync_EmptyFilter_IncludesNullDateBooks()
+    {
+        using var context = CreateContext();
+        await SeedDatabaseAsync(context);
+        var unknown = new Author { Id = Guid.NewGuid(), AuthorName = "Unknown Author" };
+        var genre = new Genre { Id = Guid.NewGuid(), GenreName = "Unknown" };
+        var publisher = new Publisher { Id = Guid.NewGuid(), PublisherName = "Unknown" };
+        context.Authors.Add(unknown);
+        context.Genres.Add(genre);
+        context.Publishers.Add(publisher);
+        context.Books.Add(new Book
+        {
+            Id = Guid.NewGuid(),
+            Title = "Ancient Book",
+            NumberOfPages = 100,
+            DatePublished = null,
+            NotParsedDate = "рік невідомий",
+            AuthorId = unknown.Id,
+            GenreId = genre.Id,
+            PublisherId = publisher.Id
+        });
+        await context.SaveChangesAsync();
+        var searcher = new BookSearcher(context);
+
+        var result = await searcher.SearchAsync(new BookFilter());
+
+        Assert.HasCount(5, result);
+    }
+
+    [TestMethod]
     public async Task SearchAsync_CombinedAuthorAndGenreFilter_ReturnsOnlyMatching()
     {
         using var context = CreateContext();

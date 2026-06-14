@@ -57,11 +57,6 @@ public class InputHandler
                 await SearchBooksAsync();
                 continue;
             }
-
-            if (choice != "1" && choice != "2" && choice != "0")
-            {
-                Console.WriteLine($"{Messages.WrongChoice}");
-            }
         }
     }
 

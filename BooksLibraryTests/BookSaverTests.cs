@@ -54,11 +54,31 @@ public class BookSaverTests
         var saver = new BookSaver(context);
         var book = ValidBook();
         book.ReleaseDate = null;
+        book.NotParsedDate = "невідома дата";
 
         await saver.SaveAsync(book);
 
         Assert.HasCount(1, saver.NotParsedDate);
-        Assert.AreEqual(0, await context.Books.CountAsync());
+        Assert.AreEqual(1, await context.Books.CountAsync());
+        var saved = await context.Books.FirstAsync();
+        Assert.IsNull(saved.DatePublished);
+        Assert.AreEqual("невідома дата", saved.NotParsedDate);
+    }
+
+    [TestMethod]
+    public async Task SaveAsync_TwoBooksWithSameNotParsedDate_DetectsDuplicate()
+    {
+        using var context = CreateContext();
+        var saver = new BookSaver(context);
+        var book = ValidBook();
+        book.ReleaseDate = null;
+        book.NotParsedDate = "невідома дата";
+
+        await saver.SaveAsync(book);
+        await saver.SaveAsync(book);
+
+        Assert.HasCount(1, saver.Duplicates);
+        Assert.AreEqual(1, await context.Books.CountAsync());
     }
 
     [TestMethod]

@@ -1,5 +1,8 @@
+using BooksLibrary;
 using BooksLibrary.Models;
 using Books.Resources;
+using CsvHelper;
+using System.Globalization;
 
 namespace Books.UI;
 
@@ -101,13 +104,10 @@ public class OutputHandler
       var path = Path.Combine(Directory.GetCurrentDirectory(), "Results");
       Directory.CreateDirectory(path);
       var outputFilePath = Path.Combine(path, $"result_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
-      var header = "Title,Pages,Genre,ReleaseDate,Author,Publisher";
-      var bookStrings = books.Select(book => string.Join(",", book.Title, book.NumberOfPages, book.Genre.GenreName,
-          book.DatePublished.ToString("yyyy-MM-dd"), book.Author.AuthorName, book.Publisher.PublisherName));
-      List<string> rows = new List<string>();
-      rows.Add(header);
-      rows.AddRange(bookStrings);
 
-      await File.WriteAllLinesAsync(outputFilePath, rows);
+      await using var writer = new StreamWriter(outputFilePath);
+      await using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+      csv.Context.RegisterClassMap<BookExportMap>();
+      await csv.WriteRecordsAsync(books);
    }
 }
